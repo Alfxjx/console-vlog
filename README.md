@@ -21,6 +21,12 @@ fast screen capturing.
 
 also offer commonjs packages for use. (end with `cjs.js`).
 
+## test it
+
+clone this repo, and use `http-server .` after run `npm run build`.
+
+open the browser(chrome preferred),and get `http://127.0.0.1:8080/test.html`
+
 ## Log
 
 2020-11-23 : mvp version
