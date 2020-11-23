@@ -1,6 +1,25 @@
 # console.vlog()
 
-快速录屏操作
+fast screen capturing.
+
+## Usage
+
+```html
+<script type="module">
+    import { Vlog } from "./bundle.esm.js";
+    var recorder = new Vlog({ name: "download" });
+    console.log(recorder);
+
+    document.getElementById("start").addEventListener("click", function () {
+        recorder.start();
+    });
+    document.getElementById("end").addEventListener("click", function () {
+        recorder.stop();
+    });
+</script>
+```
+
+also offer commonjs packages for use. (end with `cjs.js`).
 
 ## Log
 
@@ -8,4 +27,4 @@
 
 ## TODO
 
-1. 结束录屏事件，自动保存。
+1. when end the capturing, automatically save the video.
