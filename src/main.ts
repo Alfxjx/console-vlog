@@ -1,5 +1,7 @@
 interface Options{
 	name: string;
+	width: number;
+	height: number;
 }
 
 /**
@@ -12,8 +14,12 @@ interface Options{
 export class Vlog {
 	vlog: any;
 	downLoadName: string;
+	windowWidth:number;
+	windowHeight:number;
 	constructor(options: Options){
 		this.downLoadName = options.name;
+		this.windowWidth = options.width;
+		this.windowHeight = options.height;
 	}
 	start() {
 		window.navigator.mediaDevices
@@ -47,8 +53,8 @@ export class Vlog {
 		let url = window.URL.createObjectURL(blob);
 		const video = document.createElement("video");
 		video.src = url;
-		video.width = 320;
-		video.height = 240;
+		video.width = this.windowWidth;
+		video.height = this.windowHeight;
 		video.style.display = "none";
 		video.controls = true;
 		document.body.appendChild(video);

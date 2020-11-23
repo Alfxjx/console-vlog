@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<video
+			id="video"
+			width="320"
+			height="240"
+			controls
+			autoplay
+			src="https://www.runoob.com/try/demo_source/movie.mp4"
+		>
+			<object data="movie.mp4" width="320" height="240">
+				<embed width="320" height="240" src="movie.swf" />
+			</object>
+		</video>
+
+		<button type="button" id="start">Start</button>
+		<button type="button" id="end">stop</button>
+		<script type="module">
+			import { Vlog } from "./bundle.esm.js";
+			var recorder = new Vlog({ name: "下载" });
+			console.log(recorder);
+
+			document.getElementById("start").addEventListener("click", function () {
+				recorder.start();
+			});
+			document.getElementById("end").addEventListener("click", function () {
+				recorder.stop();
+			});
+		</script>
+	</body>
+</html>
