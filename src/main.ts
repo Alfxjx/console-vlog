@@ -61,7 +61,7 @@ export class Vlog {
 
 		const a = document.createElement("a");
 		a.style.display = "none";
-		// a.innerHTML = "下载视频";
+		// a.innerHTML = "downloadVideo";
 		a.download = this.downLoadName;
 		a.href = url;
 		document.body.appendChild(a);

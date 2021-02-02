@@ -1,6 +1,6 @@
 # console.vlog()
 
-快速录屏操作
+快速录屏操作 fast capturing screen video
 
 ## Log
 
@@ -8,4 +8,4 @@
 
 ## TODO
 
-1. 结束录屏事件，自动保存。
+1. 结束录屏事件，自动保存。autosave
