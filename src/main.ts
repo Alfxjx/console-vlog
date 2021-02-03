@@ -1,7 +1,6 @@
 interface Options {
 	name: string;
-	width?: number;
-	height?: number;
+	options?: MediaTrackConstraints;
 }
 
 /**
@@ -12,22 +11,20 @@ interface Options {
  * @class Vlog
  */
 export class Vlog {
-    vlog: any; // logged file
-    stream: any;
+	vlog: any; // logged file
+	stream: any;
 	downLoadName: string;
-	windowWidth: number;
-	windowHeight: number;
+	options: Object;
 	constructor(options: Options) {
 		this.downLoadName = options.name ? options.name : "video";
-		this.windowWidth = options.width ? options.width : 640;
-		this.windowHeight = options.height ? options.height : 480;
+		this.options = options.options ? options.options : {};
 	}
 	start() {
 		window.navigator.mediaDevices
 			// @ts-ignore for no support
-			.getDisplayMedia({ video: true, audio: true })
+			.getDisplayMedia({ video: true, audio: true, ...this.options })
 			.then((media: MediaStream) => {
-                this.stream = media;
+				this.stream = media;
 				this.createInstance(media);
 			})
 			.catch((err: Error) => {
@@ -58,8 +55,6 @@ export class Vlog {
 		let url = window.URL.createObjectURL(blob);
 		const video = document.createElement("video");
 		video.src = url;
-		video.width = this.windowWidth;
-		video.height = this.windowHeight;
 		video.style.display = "none";
 		video.controls = true;
 		document.body.appendChild(video);

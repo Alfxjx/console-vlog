@@ -62,7 +62,7 @@ var Vlog = /*#__PURE__*/function () {
     _defineProperty(this, "windowHeight", void 0);
 
     this.downLoadName = options.name ? options.name : "video";
-    this.windowWidth = options.width ? options.width : 640;
+    this.windowWidth = options.width ? options.width : 6;
     this.windowHeight = options.height ? options.height : 480;
   }
 
