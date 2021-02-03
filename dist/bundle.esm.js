@@ -36,21 +36,30 @@ function _defineProperty(obj, key, value) {
 }
 
 /**
- * @description 录屏插件
+ * @description screen capturing
  * @author xujx
  * @date 2020-11-23
  * @export
  * @class Vlog
  */
 var Vlog = /*#__PURE__*/function () {
+  // logged file
   function Vlog(options) {
     _classCallCheck(this, Vlog);
 
     _defineProperty(this, "vlog", void 0);
 
+    _defineProperty(this, "stream", void 0);
+
     _defineProperty(this, "downLoadName", void 0);
 
-    this.downLoadName = options.name;
+    _defineProperty(this, "windowWidth", void 0);
+
+    _defineProperty(this, "windowHeight", void 0);
+
+    this.downLoadName = options.name ? options.name : "video";
+    this.windowWidth = options.width ? options.width : 640;
+    this.windowHeight = options.height ? options.height : 480;
   }
 
   _createClass(Vlog, [{
@@ -62,8 +71,10 @@ var Vlog = /*#__PURE__*/function () {
       .getDisplayMedia({
         video: true,
         audio: true
-      }).then(function (Mediastream) {
-        _this.createInstance(Mediastream);
+      }).then(function (media) {
+        _this.stream = media;
+
+        _this.createInstance(media);
       })["catch"](function (err) {
         console.error(err);
       });
@@ -72,6 +83,9 @@ var Vlog = /*#__PURE__*/function () {
     key: "stop",
     value: function stop() {
       this.vlog.stop();
+      this.stream.getTracks().forEach(function (track) {
+        track.stop();
+      });
     }
   }, {
     key: "createInstance",
@@ -100,13 +114,13 @@ var Vlog = /*#__PURE__*/function () {
       var url = window.URL.createObjectURL(blob);
       var video = document.createElement("video");
       video.src = url;
-      video.width = 320;
-      video.height = 240;
+      video.width = this.windowWidth;
+      video.height = this.windowHeight;
       video.style.display = "none";
       video.controls = true;
       document.body.appendChild(video);
       var a = document.createElement("a");
-      a.style.display = "none"; // a.innerHTML = "下载视频";
+      a.style.display = "none"; // a.innerHTML = "downloadVideo";
 
       a.download = this.downLoadName;
       a.href = url;
