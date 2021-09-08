@@ -39,6 +39,40 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
 /**
  * @description screen capturing
  * @author xujx
@@ -57,13 +91,16 @@ var Vlog = /*#__PURE__*/function () {
 
     _defineProperty(this, "downLoadName", void 0);
 
-    _defineProperty(this, "windowWidth", void 0);
+    _defineProperty(this, "saveAfterStop", void 0);
 
-    _defineProperty(this, "windowHeight", void 0);
+    _defineProperty(this, "blob", void 0);
 
+    _defineProperty(this, "options", void 0);
+
+    this.saveAfterStop = options.options.saveAfterStop ? options.options.saveAfterStop : true;
     this.downLoadName = options.name ? options.name : "video";
-    this.windowWidth = options.width ? options.width : 6;
-    this.windowHeight = options.height ? options.height : 480;
+    this.options = options.options ? options.options : {};
+    this.blob = new Blob();
   }
 
   _createClass(Vlog, [{
@@ -72,10 +109,10 @@ var Vlog = /*#__PURE__*/function () {
       var _this = this;
 
       window.navigator.mediaDevices // @ts-ignore for no support
-      .getDisplayMedia({
+      .getDisplayMedia(_objectSpread2({
         video: true,
         audio: true
-      }).then(function (media) {
+      }, this.options)).then(function (media) {
         _this.stream = media;
 
         _this.createInstance(media);
@@ -109,7 +146,11 @@ var Vlog = /*#__PURE__*/function () {
           type: "video/mp4"
         });
 
-        _this2.saveMedia(blob);
+        if (_this2.saveAfterStop) {
+          _this2.saveMedia(blob);
+        } else {
+          _this2.blob = blob;
+        }
       };
     }
   }, {
@@ -118,8 +159,6 @@ var Vlog = /*#__PURE__*/function () {
       var url = window.URL.createObjectURL(blob);
       var video = document.createElement("video");
       video.src = url;
-      video.width = this.windowWidth;
-      video.height = this.windowHeight;
       video.style.display = "none";
       video.controls = true;
       document.body.appendChild(video);

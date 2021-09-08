@@ -1,6 +1,12 @@
 interface Options {
 	name: string;
-	options?: MediaTrackConstraints;
+	options: MyProps;
+}
+
+interface MyProps extends MediaTrackConstraints{
+	video: boolean;
+	audio: boolean;
+	saveAfterStop?: boolean;
 }
 
 /**
@@ -14,10 +20,14 @@ export class Vlog {
 	vlog: any; // logged file
 	stream: any;
 	downLoadName: string;
-	options: Object;
+	saveAfterStop: boolean;
+	blob: Blob;
+	options: MediaTrackConstraints;
 	constructor(options: Options) {
+		this.saveAfterStop = options.options.saveAfterStop ? options.options.saveAfterStop : true;
 		this.downLoadName = options.name ? options.name : "video";
 		this.options = options.options ? options.options : {};
+		this.blob = new Blob();
 	}
 	start() {
 		window.navigator.mediaDevices
@@ -48,7 +58,11 @@ export class Vlog {
 			let blob: Blob = new Blob(chunks, {
 				type: "video/mp4",
 			});
-			this.saveMedia(blob);
+			if(this.saveAfterStop){
+				this.saveMedia(blob);
+			} else {
+				this.blob = blob;
+			}
 		};
 	}
 	saveMedia(blob: Blob) {
